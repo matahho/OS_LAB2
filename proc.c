@@ -89,6 +89,11 @@ found:
   p->state = EMBRYO;
   p->pid = nextpid++;
 
+  acquire(&tickslock);
+  p->birth = ticks;
+  p->death = -1;
+  release(&tickslock);
+
   release(&ptable.lock);
 
   // Allocate kernel stack.
@@ -485,6 +490,9 @@ kill(int pid)
   for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
     if(p->pid == pid){
       p->killed = 1;
+      acquire(&tickslock);
+      p->death = ticks;
+      release(&tickslock);
       // Wake process from sleep if necessary.
       if(p->state == SLEEPING)
         p->state = RUNNABLE;
@@ -530,5 +538,34 @@ procdump(void)
         cprintf(" %p", pc[i]);
     }
     cprintf("\n");
+  }
+}
+
+
+int getLifetime(int proc_id){
+  struct proc *p;
+  uint xticks;
+
+  acquire(&tickslock);
+  xticks = ticks;
+  release(&tickslock);
+
+  acquire(&ptable.lock);
+
+  for(p = ptable.proc; p < &ptable.proc[NPROC]; p++){
+    if(p->pid == proc_id){
+      break;
+    }
+  }
+  release(&ptable.lock);
+
+  int birthTick = p->birth;
+  int deathTick = p->death;
+
+  if(deathTick != -1){
+    return deathTick - birthTick;
+  }
+  else {
+    return xticks - birthTick;
   }
 }
