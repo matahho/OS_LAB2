@@ -7,7 +7,7 @@
 int main (){
 	int thePID = getpid(); // getpid system call
 
-	//printf(1 ,"The prossec ID is : %d\n" , thePID); // this write the pid in stdout (1<-fd)
+	printf(1 ,"The prossec ID is : %d\n" , thePID); // this write the pid in stdout (1<-fd)
 	exit();
 
 
