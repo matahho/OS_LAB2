@@ -25,6 +25,7 @@ int sleep(int);
 int uptime(void);
 int processLifetime(int);
 int find_digital_root(void);
+int copy_file(char*, char*);
 
 // ulib.c
 int stat(const char*, struct stat*);

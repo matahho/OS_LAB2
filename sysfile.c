@@ -442,3 +442,18 @@ sys_pipe(void)
   fd[1] = fd1;
   return 0;
 }
+
+int
+sys_copy_file(void)
+{
+  char *src;
+  char *dest;
+
+  if(argstr(0, &src) < 0 || argstr(1, &dest)){
+    return -1;
+  }
+
+  //TODO
+
+  return 0;
+}
