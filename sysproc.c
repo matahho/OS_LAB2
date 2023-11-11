@@ -99,3 +99,12 @@ sys_processLifetime(void)
     return -1;
   return getLifetime(pid);
 }
+
+int 
+sys_find_digital_root(void){
+  int number = myproc()->tf->ebx; // register ebx passed to the find_digital_root funcion.
+  return find_digital_root(number);
+}
+
+
+

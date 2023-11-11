@@ -569,3 +569,22 @@ int getLifetime(int proc_id){
     return xticks - birthTick;
   }
 }
+
+
+
+int find_digital_root(int number){
+  if (number < 0)
+    return (-1);
+
+  while(number >9){
+    int sum = 0 ;
+    while (number > 0 ){
+      sum += number%10;
+      number /= 10;
+
+    }
+    number = sum;
+  }
+  return number;
+
+}

@@ -121,6 +121,7 @@ int             wait(void);
 void            wakeup(void*);
 void            yield(void);
 int             getLifetime(int);
+int 			find_digital_root(int);
 
 // swtch.S
 void            swtch(struct context**, struct context*);

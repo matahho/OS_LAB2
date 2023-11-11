@@ -21,3 +21,5 @@
 #define SYS_mkdir  20
 #define SYS_close  21
 #define SYS_processLifetime 22
+#define SYS_find_digital_root 23
+
