@@ -443,17 +443,75 @@ sys_pipe(void)
   return 0;
 }
 
+#define min(a, b) ((a) < (b) ? (a) : (b))
+
 int
 sys_copy_file(void)
 {
-  char *src;
-  char *dest;
+  char *src, *dest;
+  struct file *fd_src, *fd_dest;
+  struct inode *ip_src, *ip_dest;
 
-  if(argstr(0, &src) < 0 || argstr(1, &dest)){
+  cprintf("Kernel: copy_file() is called\n");
+
+  if (argstr(0, &src) < 0 || argstr(1, &dest) < 0)
+    return -1;
+
+  begin_op();
+
+  ip_dest = namei(dest);
+  if (ip_dest) {
+    cprintf("Dest file already exist\n");
+    end_op();
     return -1;
   }
 
-  //TODO
+  ip_src = namei(src);
+  if (!ip_src) {
+    cprintf("Src file doesn't exist\n");
+    end_op();
+    return -1;
+  }
 
+  ip_src = create(src,T_FILE,0,0);
+  fd_src = filealloc();
+  fd_src->type=FD_INODE;
+  fd_src->ip = ip_src;
+  fd_src->readable = 1;
+
+  
+  ip_dest = create(dest,T_FILE,0,0);
+  fd_dest = filealloc();
+
+  iunlock(ip_dest);
+  iunlock(ip_src);
+  end_op();
+  fd_dest->type=FD_INODE;
+  fd_dest->ip = ip_dest;
+  fd_dest->writable= 1;
+
+  begin_op();
+  ilock(fd_dest->ip);
+  uint offset = ip_dest->size;
+
+  
+  char buf[512];
+  int n;
+  offset = 0;
+
+  while ((n= readi(fd_src->ip,buf,offset,sizeof(buf)))>0)
+  {
+    if (writei(fd_dest->ip, buf, offset, n) != n) {
+      cprintf("Failed to write to destination file\n");
+      iunlock(fd_src->ip);
+      iunlock(fd_dest->ip);
+      end_op();
+      return -1;
+    }
+    offset += n;
+  }
+  
+  iunlock(fd_dest->ip);
+  end_op();
   return 0;
 }

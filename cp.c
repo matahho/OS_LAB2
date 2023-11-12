@@ -1,9 +1,12 @@
 #include "types.h" // for basic types like int , char , ...
 #include "stat.h"  // fro file status constatnts . 
 #include "user.h" // for user-level program systemcalls and definitiosn 
-
+#include "fcntl.h"
 
 int main(int argc , char* argv[]){
+
+
+
 	if (argc < 3){
 		printf(1 ,"cp : need destination and source\n" );
 		exit();

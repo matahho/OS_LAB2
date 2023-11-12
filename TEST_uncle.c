@@ -3,7 +3,7 @@
 #include "user.h"
 
 
-const int NUMBER_OF_CHILD = 10;
+const int NUMBER_OF_CHILD = 3;
 
 int
 main(int argc, char *argv[])

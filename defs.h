@@ -122,6 +122,7 @@ void            wakeup(void*);
 void            yield(void);
 int             getLifetime(int);
 int 			find_digital_root(int);
+int             copy_file(const char* , const char*);
 
 // swtch.S
 void            swtch(struct context**, struct context*);
