@@ -51,6 +51,9 @@ struct proc {
   struct file *ofile[NOFILE];  // Open files
   struct inode *cwd;           // Current directory
   char name[16];               // Process name (debugging)
+  struct proc *child;           // Child process************************************************
+  struct proc *prev_sibling;    // Previous sibling process
+  struct proc *next_sibling;    // Next sibling process
 };
 
 // Process memory is laid out contiguously, low addresses first:

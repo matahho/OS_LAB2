@@ -216,6 +216,21 @@ fork(void)
   safestrcpy(np->name, curproc->name, sizeof(curproc->name));
 
   pid = np->pid;
+  //************************************
+  np->prev_sibling = 0;
+  np->next_sibling = 0;
+  if (curproc->child == 0) {
+    curproc->child = np;
+  } else {
+    struct proc *sibling = curproc->child;
+    while (sibling->next_sibling != 0) {
+      sibling = sibling->next_sibling;
+    }
+    sibling->next_sibling = np;
+    np->prev_sibling = sibling;
+  }
+
+  //**************************
 
   acquire(&ptable.lock);
 

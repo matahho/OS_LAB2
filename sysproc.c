@@ -106,5 +106,23 @@ sys_find_digital_root(void){
   return find_digital_root(number);
 }
 
+int
+sys_get_uncle_count(void)
+{
+  struct proc *p = myproc();
+  struct proc *parent = p->parent;
+  struct proc *grandparent = parent->parent;
+  int uncle_count = 0;
 
+  // Traverse the sibling list of the process's father
+  struct proc *sibling = grandparent->child;
+  while (sibling != 0) {
+    if (sibling != parent) {
+      uncle_count++;
+    }
+    sibling = sibling->next_sibling;
+  }
+
+  return uncle_count;
+}
 
