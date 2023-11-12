@@ -452,7 +452,7 @@ sys_copy_file(void)
   struct file *fd_src, *fd_dest;
   struct inode *ip_src, *ip_dest;
 
-  cprintf("Kernel: copy_file() is called\n");
+  cprintf("Kernel -> copy_file() was called\n");
 
   if (argstr(0, &src) < 0 || argstr(1, &dest) < 0)
     return -1;
@@ -461,14 +461,14 @@ sys_copy_file(void)
 
   ip_dest = namei(dest);
   if (ip_dest) {
-    cprintf("Dest file already exist\n");
+    cprintf("Destination file already exists.\n");
     end_op();
     return -1;
   }
 
   ip_src = namei(src);
   if (!ip_src) {
-    cprintf("Src file doesn't exist\n");
+    cprintf("Source file does not exist.\n");
     end_op();
     return -1;
   }
@@ -502,7 +502,7 @@ sys_copy_file(void)
   while ((n= readi(fd_src->ip,buf,offset,sizeof(buf)))>0)
   {
     if (writei(fd_dest->ip, buf, offset, n) != n) {
-      cprintf("Failed to write to destination file\n");
+      cprintf("Failed to write Destination File.\n");
       iunlock(fd_src->ip);
       iunlock(fd_dest->ip);
       end_op();
