@@ -25,7 +25,7 @@ int sleep(int);
 int uptime(void);
 int processLifetime(int);
 int find_digital_root(void);
-int copy_file(char*, char*);
+int copy_file(const char*,const char*);
 int get_uncle_count(void);
 
 // ulib.c
